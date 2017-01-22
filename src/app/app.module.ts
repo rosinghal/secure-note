@@ -7,11 +7,13 @@ import { AppComponent } from './app.component';
 import {MaterialModule} from "@angular/material";
 import 'hammerjs';
 import { CardComponent } from './card/card.component';
+import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CardComponent
+    CardComponent,
+    LayoutComponent
   ],
   imports: [
     BrowserModule,

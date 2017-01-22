@@ -1,0 +1,17 @@
+<form (submit)="addNote()" #heroForm="ngForm">
+  <md-card>
+    <md-card-content>
+      <md-input-container>
+        <input md-input required [(ngModel)]="form.subject" name="subject" placeholder="Subject"
+               #subject="ngModel">
+      </md-input-container>
+      <md-input-container>
+        <textarea md-input required [(ngModel)]="form.body" name="body" placeholder="Body"
+                  #body="ngModel"></textarea>
+      </md-input-container>
+    </md-card-content>
+    <md-card-actions>
+      <button type="submit" md-raised-button>Submit</button>
+    </md-card-actions>
+  </md-card>
+</form>

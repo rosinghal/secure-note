@@ -6,10 +6,11 @@
 </md-toolbar>
 <md-sidenav-container>
   <md-sidenav #sidenav mode="side" opened="true">
-    Jolly good!
+    <ng-content select="app-list"></ng-content>
   </md-sidenav>
+
   <div>
-    <ng-content></ng-content>
+    <ng-content select="app-detail"></ng-content>
   </div>
 </md-sidenav-container>
 <md-toolbar>

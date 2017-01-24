@@ -6,22 +6,20 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import {MaterialModule} from "@angular/material";
 import 'hammerjs';
-import { LayoutComponent } from './layout/layout.component';
+// import { LayoutComponent } from './layout/layout.component';
 import {DbService} from "./db.service";
 import {CommonModule} from "@angular/common";
 import { SafeHtmlPipe } from './safe-html.pipe';
-// import {DetailModule} from "./detail/detail.module";
-// import {ListModule} from "./list/list.module";
+import {AppRoutingModule} from "./app-routing.module";
+import {DetailModule} from "./detail/detail.module";
 import {ListComponent} from "./list/list.component";
-import {DetailComponent} from "./detail/detail.component";
 
 @NgModule({
   declarations: [
     AppComponent,
-    LayoutComponent,
+    // LayoutComponent,
     SafeHtmlPipe,
-    ListComponent,
-    DetailComponent
+    ListComponent
   ],
   imports: [
     BrowserModule,
@@ -29,8 +27,8 @@ import {DetailComponent} from "./detail/detail.component";
     HttpModule,
     MaterialModule.forRoot(),
     CommonModule,
-    // DetailModule,
-    // ListModule
+    DetailModule,
+    AppRoutingModule
   ],
   providers: [
     DbService

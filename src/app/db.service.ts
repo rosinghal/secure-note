@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 declare function require(a)
 
 var PouchDB = require("pouchdb")
@@ -8,18 +8,8 @@ export class DbService {
 
   db: any; username: any; password: any; remote: any; data: any;
 
-  constructor() {
+  constructor(public zone: NgZone) {
     this.db = new PouchDB('test');
-
-    // this.db.put({
-    //   _id: 'dave@gmail.com' + Math.random(),
-    //   name: 'David',
-    //   age: 69
-    // });
-
-    // this.db.changes().on('change', function() {
-    //   console.log('Ch-Ch-Changes');
-    // });
     // this.username = 'DATABASE_KEY';
     // this.password = 'YOUR_PASSWORD';
     //
@@ -38,22 +28,90 @@ export class DbService {
     // this.db.sync(this.remote, options);
   }
 
-  addNote(subject, body) {
-    this.db.put({
-      _id: 'note' + Math.random(),
-      subject: subject,
-      body: body
-    });
+  addDoc(subject, body, _rev, _id) {
+    if(_rev && _id) { //update old doc
+      return this.db.put({
+        _id: _id,
+        _rev: _rev,
+        subject: subject,
+        body: body
+      });
+    } else { //create new doc
+      return this.db.post({
+        subject: subject,
+        body: body
+      });
+    }
+  }
 
-    this.db.changes().on('change', function() {
-      console.log('Ch-Ch-Changes');
+  getDoc(_id:string) {
+    return this.db.get(_id, {
+      include_docs: true,
+      attachments: true
     });
   }
 
-  getNotes() {
-    return this.db.allDocs({
-      include_docs: true,
-      attachments: true
+  deleteDoc(_id:string, _rev:string) {
+    return this.db.remove(_id, _rev);
+  }
+
+  getDocuments(){
+
+    return new Promise(resolve => {
+
+      this.db.allDocs({
+
+        include_docs: true,
+        attachments: true
+
+      }).then((result) => {
+
+        this.data = [];
+
+        let docs = result.rows.map((row) => {
+          this.data.push(row.doc);
+          resolve(this.data);
+        });
+
+        this.db.changes({live: true, since: 'now', include_docs: true}).on('change', (change) => {
+          this.handleChange(change);
+        });
+
+      }).catch((error) => {
+
+        console.log(error);
+
+      });
+
+    });
+
+  }
+
+  handleChange(change){
+    this.zone.run(() => {
+      let changedDoc = null;
+      let changedIndex = null;
+      this.data.forEach((doc, index) => {
+        if(doc._id === change.id){
+          changedDoc = doc;
+          changedIndex = index;
+        }
+      });
+
+      //A document was deleted
+      if(change.deleted){
+        this.data.splice(changedIndex, 1);
+      }
+      else {
+        //A document was updated
+        if(changedDoc){
+          this.data[changedIndex] = change.doc;
+        }
+        //A document was added
+        else {
+          this.data.push(change.doc);
+        }
+      }
     });
   }
 

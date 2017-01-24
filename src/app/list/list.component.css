@@ -1,0 +1,9 @@
+md-list-item {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+md-list-item.active {
+  background-color: gray;
+}

@@ -1,6 +1,20 @@
-<router-outlet>
-  <app-layout>
+<md-toolbar color="primary">
+  <md-icon (click)="sidenav.toggle()">list</md-icon>
+  <span>Secure Note</span>
+  <span class="spacer"></span>
+  <a href="https://github.com/rosinghal/secure-note" class="github-link"><md-icon>cloud_download</md-icon></a>
+</md-toolbar>
+
+<md-sidenav-container>
+  <md-sidenav #sidenav mode="side" opened="true">
     <app-list></app-list>
-    <app-detail></app-detail>
-  </app-layout>
-</router-outlet>
+  </md-sidenav>
+
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</md-sidenav-container>
+
+<md-toolbar>
+  &copy; Secure Note
+</md-toolbar>

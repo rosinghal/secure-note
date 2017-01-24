@@ -14,10 +14,9 @@ export class ListComponent implements OnInit {
   }
 
   getNotes() {
-    this.db.getNotes()
+    this.db.getDocuments()
       .then( (notes: any) => {
-        console.log(notes);
-        this.notes = notes.rows;
+        this.notes = notes;
       });
   }
 

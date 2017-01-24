@@ -60,10 +60,8 @@ export class DbService {
     return new Promise(resolve => {
 
       this.db.allDocs({
-
         include_docs: true,
         attachments: true
-
       }).then((result) => {
 
         this.data = [];
@@ -73,7 +71,15 @@ export class DbService {
           resolve(this.data);
         });
 
-        this.db.changes({live: true, since: 'now', include_docs: true}).on('change', (change) => {
+        if(result.rows.length === 0) {
+          resolve(this.data);
+        }
+
+        this.db.changes({
+          live: true,
+          since: 'now',
+          include_docs: true
+        }).on('change', (change) => {
           this.handleChange(change);
         });
 

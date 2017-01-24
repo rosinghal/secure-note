@@ -71,6 +71,11 @@ export class DetailComponent implements OnInit {
         .subscribe((note: any) => {
           this.loading = false;
           this.form = note;
+        }, (error: any) => {
+          this.snackBar.open('Note : ' + error.message, 'Ok', {
+            duration: 2000
+          });
+          this.router.navigate(['']);
         });
     }
   }

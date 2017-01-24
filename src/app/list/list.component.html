@@ -1,3 +1,6 @@
-<md-list *ngFor="let note of notes">
-  <md-list-item [routerLink]="['/note', note._id]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{note.subject}}</md-list-item>
+<md-list>
+  <md-list-item *ngFor="let note of notes" [routerLink]="['/note', note._id]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{note.subject}}</md-list-item>
+  <md-list-item *ngIf="!notes?.length">
+    No notes found.
+  </md-list-item>
 </md-list>

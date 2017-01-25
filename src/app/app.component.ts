@@ -6,7 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+
+  projects:Array<string> = [];
+  selectedProject:string = 'Default';
+
+  onNotify(projects:any):void {
+    this.projects = projects;
+  }
 
   constructor() {}
 }

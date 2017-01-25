@@ -9,7 +9,7 @@ export class DbService {
   db: any; username: any; password: any; remote: any; data: any;
 
   constructor(public zone: NgZone) {
-    this.db = new PouchDB('test');
+    this.db = new PouchDB('secure_note');
     // this.username = 'DATABASE_KEY';
     // this.password = 'YOUR_PASSWORD';
     //
@@ -28,19 +28,11 @@ export class DbService {
     // this.db.sync(this.remote, options);
   }
 
-  addDoc(subject, body, _rev, _id) {
+  addNote(subject, body, _rev, _id, project = 'Default') {
     if(_rev && _id) { //update old doc
-      return this.db.put({
-        _id: _id,
-        _rev: _rev,
-        subject: subject,
-        body: body
-      });
+      return this.db.put({subject, body, _rev, _id, project});
     } else { //create new doc
-      return this.db.post({
-        subject: subject,
-        body: body
-      });
+      return this.db.post({subject, body, project});
     }
   }
 

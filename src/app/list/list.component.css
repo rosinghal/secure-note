@@ -7,3 +7,11 @@ md-list-item {
 md-list-item.active {
   background-color: gray;
 }
+
+.add-fab {
+  position: absolute;
+  top: auto;
+  left: auto;
+  right: 20px;
+  bottom: 20px;
+}

@@ -13,12 +13,6 @@
   margin: 0 10px;
 }
 
-.example-fab {
-  position: absolute;
-  right: 20px;
-  bottom: 10px;
-}
-
 .example-full-width {
   width: 100%;
 }
@@ -29,8 +23,10 @@ md-card {
 
 textarea {
   resize:vertical;
+  height: calc(100vh - 220px);
 }
 
-.example-spacer {
-  flex: 1 1 auto;
+.delete-btn {
+  position: fixed;
+  right: 20px;
 }

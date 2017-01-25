@@ -1,27 +1,26 @@
 <md-progress-bar mode="indeterminate" *ngIf="loading"></md-progress-bar>
 
-<form (submit)="addNote()" #heroForm="ngForm">
+<!--<form (submit)="addNote()" #heroForm="ngForm">-->
   <md-card>
     <md-card-content>
-      <md-input-container class="example-full-width">
-        <input md-input required [(ngModel)]="form.subject" name="subject" placeholder="Subject"
-               #subject="ngModel">
-      </md-input-container>
-      <md-input-container class="example-full-width">
-        <textarea md-input required [(ngModel)]="form.body" name="body" placeholder="Body"
-                  #body="ngModel"></textarea>
-      </md-input-container>
-    </md-card-content>
-    <md-card-actions>
-      <button type="submit" md-raised-button>Submit</button>
-      <span class="example-spacer"></span>
-      <button type="button" md-raised-button mdTooltip="Delete this note?" (click)="deleteNote()" *ngIf="form._id && form._rev">
+      <button class="delete-btn" type="button" md-mini-fab mdTooltip="Delete?" (click)="deleteNote()" *ngIf="form._id && form._rev">
         <md-icon>delete</md-icon>
       </button>
-    </md-card-actions>
+      <md-input-container class="example-full-width">
+        <input md-input required (input)="subject$.next($event.target.value)" [(ngModel)]="form.subject" name="subject" placeholder="Subject">
+               <!--#subject="ngModel">-->
+      </md-input-container>
+      <md-input-container class="example-full-width">
+        <textarea md-input required (input)="body$.next($event.target.value)" [(ngModel)]="form.body" name="body" placeholder="Body"></textarea>
+                  <!--#body="ngModel"></textarea>-->
+      </md-input-container>
+    </md-card-content>
+    <!--<md-card-actions>-->
+      <!--&lt;!&ndash;<button type="submit" md-raised-button>Submit</button>&ndash;&gt;-->
+      <!--<span class="spacer"></span>-->
+      <!--<button type="button" md-raised-button mdTooltip="Delete this note?" (click)="deleteNote()" *ngIf="form._id && form._rev">-->
+        <!--<md-icon>delete</md-icon>-->
+      <!--</button>-->
+    <!--</md-card-actions>-->
   </md-card>
-</form>
-
-<button md-mini-fab class="example-fab" routerLink="">
-  <md-icon>add</md-icon>
-</button>
+<!--</form>-->

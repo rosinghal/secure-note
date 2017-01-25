@@ -1,9 +1,13 @@
-///<reference path="../../../node_modules/rxjs/add/operator/switchMap.d.ts"/>
 import { Component, OnInit } from '@angular/core';
 import {DbService} from "../db.service";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import "rxjs/add/operator/switchMap";
 import {MdSnackBar} from "@angular/material";
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-detail',
@@ -15,6 +19,8 @@ export class DetailComponent implements OnInit {
   form: any;
   noteId: string;
   loading: boolean;
+  subject$ = new Subject<string>();
+  body$ = new Subject<string>();
 
   constructor(
     private db:DbService,
@@ -23,29 +29,32 @@ export class DetailComponent implements OnInit {
     private snackBar: MdSnackBar) {
     this.form = {
       subject: null,
-      body: null
+      body: null,
+      _id: null,
+      _rev: null
     };
+
+    this.body$.debounceTime(400)
+      .distinctUntilChanged()
+      .switchMap(body => this.db.addNote(this.form.subject, body, this.form._rev, this.form._id))
+      .subscribe((note:any) => this.handleResponse(note));
+
+    this.subject$.debounceTime(400)
+      .distinctUntilChanged()
+      .switchMap(subject => this.db.addNote(subject, this.form.body, this.form._rev, this.form._id))
+      .subscribe((note:any) => this.handleResponse(note));
   }
 
-  addNote() {
-    var vm = this;
-    this.loading = true;
-    vm.db.addDoc(vm.form.subject, vm.form.body, vm.form._rev, vm.form._id)
-      .then(function (note) {
-        vm.loading = false;
-        if(vm.form._rev) {
-          vm.snackBar.open('Note updated', 'Ok', {
-            duration: 2000
-          });
-          vm.form._id = note.id;
-          vm.form._rev = note.rev;
-        } else {
-          vm.snackBar.open('Note created', 'Ok', {
-            duration: 2000
-          });
-          vm.router.navigate(['/note', note.id]);
-        }
-      });
+  handleResponse(note) {
+    if(note) {
+      if(this.form._rev && this.form._id) {
+        this.form._id = note['id'];
+        this.form._rev = note['rev'];
+      } else {
+        // todo - change url without notifying
+        this.router.navigate(['/note', note['id']]);
+      }
+    }
   }
 
   deleteNote() {
@@ -53,7 +62,7 @@ export class DetailComponent implements OnInit {
     if(vm.form._id && vm.form._rev) {
       vm.db.deleteDoc(vm.form._id, vm.form._rev)
         .then(function () {
-          vm.snackBar.open('Note deleted', 'Ok', {
+          vm.snackBar.open('Note deleted', null, {
             duration: 2000
           });
           vm.router.navigate(['']);

@@ -11,5 +11,5 @@ md-sidenav {
 }
 
 .content {
-  min-height: 300px;
+  min-height: calc(100vh - 100px);
 }

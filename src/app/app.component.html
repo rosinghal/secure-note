@@ -2,12 +2,17 @@
   <md-icon (click)="sidenav.toggle()">list</md-icon>
   <span>Secure Note</span>
   <span class="spacer"></span>
+  <!--<md-select placeholder="Select Project" [(ngModel)]="selectedProject" name="project">-->
+    <!--<md-option *ngFor="let project of projects" [value]="project">-->
+      <!--{{project}}-->
+    <!--</md-option>-->
+  <!--</md-select>-->
   <a href="https://github.com/rosinghal/secure-note" class="github-link"><md-icon>cloud_download</md-icon></a>
 </md-toolbar>
 
 <md-sidenav-container>
   <md-sidenav #sidenav mode="side" opened="true">
-    <app-list></app-list>
+    <app-list (notify)="onNotify($event)"></app-list>
   </md-sidenav>
 
   <div class="content">
@@ -15,6 +20,6 @@
   </div>
 </md-sidenav-container>
 
-<md-toolbar>
-  &copy; Secure Note
-</md-toolbar>
+<!--<md-toolbar>-->
+  <!--&copy; Secure Note-->
+<!--</md-toolbar>-->

@@ -1,7 +1,12 @@
 <md-toolbar color="primary">
   <md-icon (click)="sidenav.toggle()">list</md-icon>
-  <span>Secure Note</span>
+  <span class="brand"><a routerLink="">Secure Notes</a></span>
   <span class="spacer"></span>
+  <button md-button [mdMenuTriggerFor]="menu">Menu</button>
+  <md-menu #menu="mdMenu">
+    <button md-menu-item>Default</button>
+    <button md-menu-item (click)="newProject()">Create new project</button>
+  </md-menu>
   <!--<md-select placeholder="Select Project" [(ngModel)]="selectedProject" name="project">-->
     <!--<md-option *ngFor="let project of projects" [value]="project">-->
       <!--{{project}}-->

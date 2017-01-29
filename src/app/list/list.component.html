@@ -1,10 +1,12 @@
 <md-list>
-  <md-list-item *ngFor="let note of notes" [routerLink]="['/note', note._id]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{note.subject}}</md-list-item>
+  <md-list-item *ngFor="let note of notes" [routerLink]="['/note', note._id]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <span md-line>{{note.content ? note.content.split('\n')[0] : note._id}}</span>
+  </md-list-item>
   <md-list-item *ngIf="!notes?.length">
     No notes found.
   </md-list-item>
 </md-list>
 
-<button md-mini-fab class="add-fab" routerLink="">
+<button md-mini-fab class="add-fab" (click)="addNote()">
   <md-icon>add</md-icon>
 </button>

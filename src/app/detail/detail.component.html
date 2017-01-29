@@ -1,26 +1,34 @@
 <md-progress-bar mode="indeterminate" *ngIf="loading"></md-progress-bar>
 
-<!--<form (submit)="addNote()" #heroForm="ngForm">-->
-  <md-card>
-    <md-card-content>
-      <button class="delete-btn" type="button" md-mini-fab mdTooltip="Delete?" (click)="deleteNote()" *ngIf="form._id && form._rev">
-        <md-icon>delete</md-icon>
-      </button>
-      <md-input-container class="example-full-width">
-        <input md-input required (input)="subject$.next($event.target.value)" [(ngModel)]="form.subject" name="subject" placeholder="Subject">
-               <!--#subject="ngModel">-->
-      </md-input-container>
-      <md-input-container class="example-full-width">
-        <textarea md-input required (input)="body$.next($event.target.value)" [(ngModel)]="form.body" name="body" placeholder="Body"></textarea>
-                  <!--#body="ngModel"></textarea>-->
-      </md-input-container>
-    </md-card-content>
-    <!--<md-card-actions>-->
-      <!--&lt;!&ndash;<button type="submit" md-raised-button>Submit</button>&ndash;&gt;-->
-      <!--<span class="spacer"></span>-->
-      <!--<button type="button" md-raised-button mdTooltip="Delete this note?" (click)="deleteNote()" *ngIf="form._id && form._rev">-->
-        <!--<md-icon>delete</md-icon>-->
-      <!--</button>-->
-    <!--</md-card-actions>-->
-  </md-card>
-<!--</form>-->
+<md-card
+  ng2FileSelect
+  ng2FileDrop
+  (fileOver)="fileOver($event)"
+  [uploader]="uploader"
+>
+  <md-card-content>
+    <md-input-container class="example-full-width">
+      <textarea
+        md-input
+        required
+        (input)="content$.next($event.target.value)"
+        [(ngModel)]="doc.content"
+        name="content"
+        placeholder="Content"
+        #content="ngModel"
+      ></textarea>
+    </md-input-container>
+  </md-card-content>
+  <!--<button class="delete-btn" type="button" md-mini-fab mdTooltip="Delete?" (click)="deleteNote()">-->
+    <!--<md-icon>delete</md-icon>-->
+  <!--</button>-->
+  <div *ngIf="attachments.length">
+    <ul class="files">
+      <li *ngFor="let attachment of attachments">
+        <a [href]="attachment.url" target="_blank">
+          {{attachment.name}}
+        </a>
+      </li>
+    </ul>
+  </div>
+</md-card>

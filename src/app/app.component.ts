@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {MdDialog} from "@angular/material";
+import {ProductAddDialogComponent} from "./product-add-dialog/product-add-dialog.component";
 
 @Component({
   selector: 'app-root',
@@ -14,5 +16,14 @@ export class AppComponent {
     this.projects = projects;
   }
 
-  constructor() {}
+  newProject() {
+    let dialogRef = this.dialog.open(ProductAddDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
+  }
+
+  constructor(
+    public dialog: MdDialog
+  ) {}
 }

@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {DbService} from "../db.service";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import "rxjs/add/operator/switchMap";
-import {MdSnackBar} from "@angular/material";
+import {MdSnackBar, MdSnackBarConfig} from "@angular/material";
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import {FileUploader} from "ng2-file-upload";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-detail',
@@ -16,53 +18,39 @@ import 'rxjs/add/operator/switchMap';
 })
 export class DetailComponent implements OnInit {
 
-  form: any;
+  doc: any;
   noteId: string;
   loading: boolean;
-  subject$ = new Subject<string>();
-  body$ = new Subject<string>();
+  content$ = new Subject<string>();
+  attachments: Array<any>;
+  public uploader:FileUploader = new FileUploader({url: '/api/'});
 
   constructor(
     private db:DbService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MdSnackBar) {
-    this.form = {
-      subject: null,
-      body: null,
-      _id: null,
-      _rev: null
-    };
+    private snackBar: MdSnackBar,
+    private sanitizer:DomSanitizer) {
 
-    this.body$.debounceTime(400)
-      .distinctUntilChanged()
-      .switchMap(body => this.db.addNote(this.form.subject, body, this.form._rev, this.form._id))
-      .subscribe((note:any) => this.handleResponse(note));
+    this.doc = {};
+    this.attachments = [];
 
-    this.subject$.debounceTime(400)
+    this.content$.debounceTime(400)
       .distinctUntilChanged()
-      .switchMap(subject => this.db.addNote(subject, this.form.body, this.form._rev, this.form._id))
+      .switchMap(body => this.db.updateNote(this.doc))
       .subscribe((note:any) => this.handleResponse(note));
   }
 
-  handleResponse(note) {
-    if(note) {
-      if(this.form._rev && this.form._id) {
-        this.form._id = note['id'];
-        this.form._rev = note['rev'];
-      } else {
-        // todo - change url without notifying
-        this.router.navigate(['/note', note['id']]);
-      }
-    }
+  handleResponse(note:any):void {
+    this.doc._rev = note.rev;
   }
 
   deleteNote() {
     var vm = this;
-    if(vm.form._id && vm.form._rev) {
-      vm.db.deleteDoc(vm.form._id, vm.form._rev)
+    if(vm.doc._id && vm.doc._rev) {
+      vm.db.deleteDoc(vm.doc._id, vm.doc._rev)
         .then(function () {
-          vm.snackBar.open('Note deleted', null, {
+          vm.snackBar.open('Note deleted', null, <MdSnackBarConfig>{
             duration: 2000
           });
           vm.router.navigate(['']);
@@ -70,23 +58,58 @@ export class DetailComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.route.params.subscribe(data => this.noteId = data['id']);
-    if(this.noteId) {
-      this.loading = true;
-      this.route.params
-        // (+) converts string 'id' to a number
-        .switchMap((params: Params) => this.db.getDoc(params['id']))
-        .subscribe((note: any) => {
-          this.loading = false;
-          this.form = note;
-        }, (error: any) => {
-          this.snackBar.open('Note : ' + error.message, 'Ok', {
-            duration: 2000
+  getAttachments():void {
+    var vm = this;
+    if(this.doc.hasOwnProperty('_attachments')) {
+      Object.keys(this.doc._attachments).map((key:string):string => {
+        vm.db.getAttachmentBlob(vm.doc._id, key)
+          .then(function (blobOrBuffer:any):void {
+            var file = vm.db.getBlobDetail(blobOrBuffer, key);
+            vm.attachments.push(file);
           });
-          this.router.navigate(['']);
-        });
+        return key;
+      });
     }
+  }
+
+  uploadAttachment(fileObj:any) {
+    var vm = this;
+    if(vm.doc._id && vm.doc._rev) {
+      vm.db.uploadAttachment(vm.doc._id, vm.doc._rev, fileObj)
+        .then(function (response:any) {
+          vm.uploader.clearQueue();
+          console.log(response);
+          vm.handleResponse(response.note);
+          vm.attachments.push(response.file);
+        })
+        .catch(console.log.bind(console));
+    }
+  }
+
+  fileOver(e:any):void {
+    if(this.uploader.getNotUploadedItems().length) {
+      this.uploadAttachment(this.uploader.getNotUploadedItems()[0]._file);
+    }
+  }
+
+  ngOnInit() {
+    this.loading = true;
+    this.route.params
+      // (+) converts string 'id' to a number
+      .switchMap((params: Params) => this.db.getDoc(params['id']))
+      .subscribe((note: any) => {
+        console.log(note);
+        this.attachments = [];
+        this.loading = false;
+        this.doc = note;
+        this.getAttachments();
+      }, (error: any) => {
+        console.log(error);
+        this.snackBar.open('Note : ' + error.message, 'Ok', <MdSnackBarConfig>{
+          duration: 2000
+        });
+        this.router.navigate(['']);
+      });
   }
 
 }

@@ -13,13 +13,19 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 import {AppRoutingModule} from "./app-routing.module";
 import {DetailModule} from "./detail/detail.module";
 import {ListComponent} from "./list/list.component";
+import {HomeModule} from "./home/home.module";
+import { ProductAddDialogComponent } from './product-add-dialog/product-add-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     // LayoutComponent,
     SafeHtmlPipe,
-    ListComponent
+    ListComponent,
+    ProductAddDialogComponent
+  ],
+  entryComponents: [
+    ProductAddDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +34,7 @@ import {ListComponent} from "./list/list.component";
     MaterialModule.forRoot(),
     CommonModule,
     DetailModule,
+    HomeModule,
     AppRoutingModule
   ],
   providers: [

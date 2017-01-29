@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {DetailComponent} from "./detail.component";
+import {HomeComponent} from "./home.component";
 
 const routes: Routes = [
-  { path: 'note/:id', component: DetailComponent }
+  { path: '',  component: HomeComponent }
 ];
 
 @NgModule({
@@ -11,4 +11,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class DetailRoutingModule { }
+export class HomeRoutingModule { }

@@ -11,5 +11,11 @@ md-sidenav {
 }
 
 .content {
-  min-height: calc(100vh - 100px);
+  height: calc(100vh - 75px);
+}
+
+.brand a {
+  text-decoration: none;
+  color: inherit;
+  margin-left: 5px;
 }

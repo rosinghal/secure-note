@@ -1,0 +1,13 @@
+<form (ngSubmit)="onSubmit()" #projectForm="ngForm">
+  <md-input-container>
+    <input
+      required
+      md-input
+      [(ngModel)]="newDb.name"
+      name="name"
+      placeholder="Project Name"
+      #name="ngModel"
+    >
+  </md-input-container>
+  <button type="submit" md-raised-button>Add</button>
+</form>

@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import {FileUploader} from "ng2-file-upload";
+// import {FileUploader} from "ng2-file-upload";
 import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
@@ -23,7 +23,7 @@ export class DetailComponent implements OnInit {
   loading: boolean;
   content$ = new Subject<string>();
   attachments: Array<any>;
-  public uploader:FileUploader = new FileUploader({url: '/api/'});
+  // public uploader:FileUploader = new FileUploader({url: '/api/'});
 
   constructor(
     private db:DbService,
@@ -77,7 +77,7 @@ export class DetailComponent implements OnInit {
     if(vm.doc._id && vm.doc._rev) {
       vm.db.uploadAttachment(vm.doc._id, vm.doc._rev, fileObj)
         .then(function (response:any) {
-          vm.uploader.clearQueue();
+          // vm.uploader.clearQueue();
           console.log(response);
           vm.handleResponse(response.note);
           vm.attachments.push(response.file);
@@ -87,9 +87,9 @@ export class DetailComponent implements OnInit {
   }
 
   fileOver(e:any):void {
-    if(this.uploader.getNotUploadedItems().length) {
-      this.uploadAttachment(this.uploader.getNotUploadedItems()[0]._file);
-    }
+    // if(this.uploader.getNotUploadedItems().length) {
+    //   this.uploadAttachment(this.uploader.getNotUploadedItems()[0]._file);
+    // }
   }
 
   ngOnInit() {

@@ -4,7 +4,7 @@ import { DetailRoutingModule } from './detail-routing.module';
 import { DetailComponent } from './detail.component';
 import {FormsModule} from "@angular/forms";
 import {MaterialModule} from "@angular/material";
-import {FileSelectDirective, FileDropDirective} from "ng2-file-upload";
+// import {FileSelectDirective, FileDropDirective} from "ng2-file-upload";
 
 @NgModule({
   imports: [
@@ -15,8 +15,8 @@ import {FileSelectDirective, FileDropDirective} from "ng2-file-upload";
   ],
   declarations: [
     DetailComponent,
-    FileSelectDirective,
-    FileDropDirective
+    // FileSelectDirective,
+    // FileDropDirective
   ]
 })
 export class DetailModule { }

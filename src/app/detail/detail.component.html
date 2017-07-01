@@ -9,7 +9,7 @@
   <md-card-content>
     <md-input-container class="example-full-width">
       <textarea
-        md-input
+        mdInput
         required
         (input)="content$.next($event.target.value)"
         [(ngModel)]="doc.content"
@@ -19,9 +19,9 @@
       ></textarea>
     </md-input-container>
   </md-card-content>
-  <!--<button class="delete-btn" type="button" md-mini-fab mdTooltip="Delete?" (click)="deleteNote()">-->
-    <!--<md-icon>delete</md-icon>-->
-  <!--</button>-->
+  <button class="delete-btn" type="button" md-mini-fab mdTooltip="Delete?" (click)="deleteNote()">
+    <md-icon>delete</md-icon>
+  </button>
   <div *ngIf="attachments.length">
     <ul class="files">
       <li *ngFor="let attachment of attachments">

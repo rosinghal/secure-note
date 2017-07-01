@@ -11,7 +11,7 @@ import {FileSelectDirective, FileDropDirective} from "ng2-file-upload";
     CommonModule,
     FormsModule,
     DetailRoutingModule,
-    MaterialModule.forRoot()
+    MaterialModule
   ],
   declarations: [
     DetailComponent,

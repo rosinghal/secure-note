@@ -1,14 +1,14 @@
-import { SecureNotePage } from './app.po';
+import { SecureNotesPage } from './app.po';
 
-describe('secure-note App', function() {
-  let page: SecureNotePage;
+describe('secure-notes App', () => {
+  let page: SecureNotesPage;
 
   beforeEach(() => {
-    page = new SecureNotePage();
+    page = new SecureNotesPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getParagraphText()).toEqual('Welcome to app!!');
   });
 });

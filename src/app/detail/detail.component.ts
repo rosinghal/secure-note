@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DbService} from "../db.service";
+import {DbService} from "../extras/db.service";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import "rxjs/add/operator/switchMap";
 import {MdSnackBar, MdSnackBarConfig} from "@angular/material";
@@ -14,7 +14,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.css']
+  styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
 

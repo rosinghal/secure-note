@@ -1,11 +1,11 @@
 import {Component, OnInit, EventEmitter, Output} from '@angular/core';
-import {DbService} from "../db.service";
+import {DbService} from "../extras/db.service";
 import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
 
